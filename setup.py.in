@@ -1,0 +1,17 @@
+from setuptools import setup, Extension
+
+setup(name='letce2',
+      version='@VERSION@',
+      description='Lightweight Experiment Test Control Environment 2',
+      long_description='Lightweight Experiment Test Control Environment 2',
+      author='Adjacent Link LLC',
+      author_email='labs at adjacent link dot com',
+      url="https://adjacentlink.com",
+      license = 'BSD',
+      packages=['letce2',
+                'letce2.interface',
+                'letce2.engine',
+                'letce2.plugins',
+                'letce2.utils'],
+      scripts=['scripts/letce2'])
+
