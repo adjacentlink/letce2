@@ -2,6 +2,7 @@ EXTRA_DIST= \
  m4 \
  AUTHORS \
  COPYING \
+ README.md \
  autogen.sh \
  setup.py.in \
  letce2 \
