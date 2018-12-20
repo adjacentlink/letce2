@@ -7,6 +7,7 @@ EXTRA_DIST= \
  setup.py.in \
  letce2 \
  scripts \
+ debian \
  $(PACKAGE).spec.in
 
 BUILT_SOURCES = \
@@ -25,6 +26,7 @@ clean-local: setup.py
 	-find . -name "*.pyc" -delete
 	-rm -f .installedfiles
 	-rm -rf .rpmbuild
+	-rm -rf .debbuild
 	-rm -f $(PACKAGE).spec
 
 DISTCLEANFILES=setup.py
@@ -33,7 +35,9 @@ sdist:
 	$(PYTHON) setup.py sdist
 
 edit = sed \
-        -e 's|@VERSION[@]|$(VERSION)|g'
+        -e 's|@VERSION[@]|$(VERSION)|g' \
+        -e 's|@DEBIAN_VERSION[@]|$(DEBIAN_VERSION)|g' \
+        -e 's|@DATE_RFC2822[@]|$(DATE_RFC2822)|g'
 
 setup.py:	setup.py.in
 	if test -f $@; then chmod u+w $@; fi
@@ -69,6 +73,19 @@ rpm: $(PACKAGE).spec dist-gzip
 	@echo "============================================================"
 	@echo "RPMs located in .rpmbuild/RPMS and .rpmbuild/SRPMS"
 
+endif
+
+if HAVE_DEB
+
+deb: dist-gzip
+	mkdir -p .debbuild
+	cp -f $(PACKAGE)-$(VERSION).tar.gz .debbuild
+	cd .debbuild && tar xzf $(PACKAGE)-$(VERSION).tar.gz
+	$(edit) .debbuild/$(PACKAGE)-$(VERSION)/debian/changelog.in > \
+          .debbuild/$(PACKAGE)-$(VERSION)/debian/changelog
+	cd .debbuild/$(PACKAGE)-$(VERSION) && dpkg-buildpackage -F -us -uc
+	@echo "============================================================"
+	@echo "debs located in .debbuild"
 endif
 
 $(PACKAGE).spec: $(PACKAGE).spec.in

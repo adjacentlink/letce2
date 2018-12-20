@@ -1,0 +1,20 @@
+Source: letce2
+Section: unknown
+Priority: extra
+Maintainer: Adjacent Link LLC <labs@adjacentlink.com>
+Build-Depends: debhelper (>= 8.0.0), dh-python
+Standards-Version: 3.9.3
+Homepage: https://github.com/adjacentlink/letce2
+
+Package: python-letce2
+Section: python
+Architecture: all
+Depends: ${python:Depends}, ${misc:Depends}
+Replaces: emanesh
+Description: Lightweight Experiment Template Configuration Environment
+
+Package: python3-letce2
+Section: python
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Lightweight Experiment Template Configuration Environment
