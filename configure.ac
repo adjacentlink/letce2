@@ -32,7 +32,7 @@
  See toplevel COPYING for more information.
 ])
 
-AC_INIT([letce2],0.2.2,[labs at adjacentlink dot com])
+AC_INIT([letce2],0.2.3,[labs at adjacentlink dot com])
 
 AC_CONFIG_SRCDIR([letce2])
 
@@ -49,6 +49,14 @@ AC_PYTHON_MODULE(mako)
 # check for rpmbuild
 AC_CHECK_PROG(HAVE_RPMBUILD, rpmbuild, true, false)
 AM_CONDITIONAL(HAVE_RPMBUILD,$HAVE_RPMBUILD)
+
+AC_CHECK_PROG(HAVE_DEB, dh_clean, true, false)
+AM_CONDITIONAL(HAVE_DEB,$HAVE_DEB)
+
+AC_CHECK_FILE(/etc/debian_version,[DEBIAN_VERSION=`cat /etc/debian_version | awk -F/ '{print $1}'`],)
+AC_SUBST(DEBIAN_VERSION)
+
+AC_SUBST(DATE_RFC2822,`date -R`)
 
 LANG=C
 AC_SUBST(LANG)
