@@ -316,9 +316,9 @@ def build_configuration(experiment_configurations,
                 os.chmod(os.path.join(node,template),
                          os.stat(template_file).st_mode)
 
-                node_index[node] = index
+            node_index[node] = index
 
-                index += 1
+            index += 1
 
     if 'host' in nodes:
         # build host templates
