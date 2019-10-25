@@ -12,3 +12,4 @@ setup.py
 letce2-*.tar.gz
 .rpmbuild
 letce2.spec
+.debbuild
