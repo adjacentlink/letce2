@@ -20,6 +20,10 @@ BuildArch: noarch
 %define with_pathfix 0
 %endif
 
+%if 0%{?el8}
+%define with_python3 1
+%endif
+
 # Fedora (non-EOL)
 %if 0%{?fedora}
 %if %{fedora} < 31
@@ -49,16 +53,16 @@ templates.
 %package -n python2-%{name}
 Summary: %{summary}
 %{?python_provide:%python_provide python2-%{name}}
-%if 0%{?fedora} >= 26
-BuildRequires: python2-devel
-Requires: python2-setuptools
-Requires: python-mako
-%define use_python2_sitelib %{python2_sitelib}
-%else
+%if %{with_old_depends}
 BuildRequires: python-devel
 Requires: python-setuptools
 Requires: python-mako
 %define use_python2_sitelib %{python_sitelib}
+%else
+BuildRequires: python2-devel
+Requires: python2-setuptools
+Requires: python-mako
+%define use_python2_sitelib %{python2_sitelib}
 %endif
 %description -n python2-%{name} %{_description}
 %endif
