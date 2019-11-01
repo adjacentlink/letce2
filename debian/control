@@ -10,7 +10,6 @@ Package: python-letce2
 Section: python
 Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}
-Replaces: emanesh
 Description: Lightweight Experiment Template Configuration Environment
 
 Package: python3-letce2

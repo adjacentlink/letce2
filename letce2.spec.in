@@ -1,5 +1,3 @@
-%define with_python3 %{?_without_python3:0} %{?!_without_python3:1}
-
 Summary: Lightweight Experiment Template Configuration Environment
 Name:  letce2
 Version: @VERSION@
@@ -12,14 +10,36 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Vendor: Adjacent Link LLC
 BuildArch: noarch
 
-%if 0%{?fedora} < 26
-%define with_python3 0
+%define with_old_depends 0
+%define with_pathfix 1
+
+# RHEL/CentOS
+%if 0%{?el7}
+%define with_python2 1
+%define with_old_depends 1
+%define with_pathfix 0
 %endif
 
-%if 0%{?fedora} >= 26
-%define use_python2_sitelib %{python2_sitelib}
+%if 0%{?el8}
+%define with_python3 1
+%endif
+
+# Fedora (non-EOL)
+%if 0%{?fedora}
+%if %{fedora} < 31
+%define with_python3 1
+%define with_python2 1
 %else
+%define with_python3 1
+%endif
+%endif
+
+%if 0%{?with_python2}
+%if %{with_old_depends}
 %define use_python2_sitelib %{python_sitelib}
+%else
+%define use_python2_sitelib %{python2_sitelib}
+%endif
 %endif
 
 %global _description \
@@ -29,23 +49,25 @@ templates.
 
 %description %{_description}
 
+%if 0%{?with_python2}
 %package -n python2-%{name}
 Summary: %{summary}
 %{?python_provide:%python_provide python2-%{name}}
-%if 0%{?fedora} >= 26
-BuildRequires: python2-devel
-Requires: python2-setuptools
-Requires: python-mako
-%define use_python2_sitelib %{python2_sitelib}
-%else
+%if %{with_old_depends}
 BuildRequires: python-devel
 Requires: python-setuptools
 Requires: python-mako
 %define use_python2_sitelib %{python_sitelib}
+%else
+BuildRequires: python2-devel
+Requires: python2-setuptools
+Requires: python-mako
+%define use_python2_sitelib %{python2_sitelib}
 %endif
 %description -n python2-%{name} %{_description}
+%endif
 
-%if %{with_python3}
+%if 0%{?with_python3}
 %package -n python3-%{name}
 Summary: %{summary}
 %{?python_provide:%python_provide python3-%{name}}
@@ -62,18 +84,27 @@ Requires: python3-mako
 %configure
 
 %install
-%if %{with_python3}
+%if 0%{?with_python3}
 make  DESTDIR=${RPM_BUILD_ROOT} PYTHON=%{__python3} install
 
 mv %{buildroot}/%{_bindir}/letce2 %{buildroot}/%{_bindir}/letce2-%{python3_version}
 ln -s letce2-%{python3_version} %{buildroot}%{_bindir}/letce2-3
+%if 0%{?with_python2} == 0
+ln -s letce2-3 %{buildroot}%{_bindir}/letce2
+%endif
+pathfix.py -pni "%{__python3} %{py3_shbang_opts}" %{buildroot}%{_bindir}/*-%{python3_version}
 %endif
 
+%if 0%{?with_python2}
 make  DESTDIR=${RPM_BUILD_ROOT} PYTHON=%{__python2} install
 
 mv %{buildroot}/%{_bindir}/letce2 %{buildroot}/%{_bindir}/letce2-%{python2_version}
 ln -s letce2-%{python2_version} %{buildroot}%{_bindir}/letce2-2
 ln -s letce2-2 %{buildroot}%{_bindir}/letce2
+%if %{with_pathfix}
+pathfix.py -pni "%{__python2} %{py2_shbang_opts}" %{buildroot}%{_bindir}/*-%{python2_version}
+%endif
+%endif
 
 find ${RPM_BUILD_ROOT} -name '*.a' -exec rm '{}'  \;
 find ${RPM_BUILD_ROOT} -name '*.la' -exec rm '{}' \;
@@ -91,6 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun
 
+%if 0%{?with_python2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
 %{_bindir}/letce2
@@ -102,12 +134,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_licensedir}/%{name}
 %license %{_licensedir}/%{name}/COPYING
 %endif
+%endif
 
-%if %{with_python3}
+%if 0%{?with_python3}
 %files -n python3-%{name}
 %defattr(-,root,root,-)
 %{_bindir}/letce2-3
 %{_bindir}/letce2-%{python3_version}
+%if 0%{?with_python2} == 0
+%{_bindir}/letce2
+%endif
 %{python3_sitelib}/*
 %doc %{_pkgdocdir}
 %if 0%{?_licensedir:1}
