@@ -1,4 +1,5 @@
-# Copyright (c) 2017-2018 - Adjacent Link LLC, Bridgewater, New Jersey
+# Copyright (c) 2017-2018,2020 - Adjacent Link LLC, Bridgewater,
+# New Jersey
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -41,6 +42,7 @@ from collections import namedtuple, defaultdict
 from pkg_resources import resource_filename
 from mako.template import Template
 from .safe_parser import create_safe_parser
+from letce2.utils.filesystem import mkdir_p
 
 try:
     import ConfigParser as configparser
@@ -296,6 +298,14 @@ def build_configuration(experiment_configurations,
         if node != 'host':
             # build node templates
             for template in list(templates[node].values()):
+                target=''
+
+                m = re.match(r'^(.*)@mv{(.+)}$',template)
+
+                if m:
+                    template = m.group(1)
+                    target = m.group(2)
+
                 template_file = template_lookup(template,template_paths[node],plugin_module_name)
 
                 mako_template = Template(filename=template_file,
@@ -303,17 +313,27 @@ def build_configuration(experiment_configurations,
                                                          'division',
                                                          'print_function'])
 
-                ofd = open(os.path.join(node,template),'w')
-
                 kwargs = template_kwargs(template,
                                          node,
                                          __node_index=index)
+
+                out_dir = os.path.join(node,os.path.dirname(target))
+
+                out_file = os.path.basename(target)
+
+                if out_file == '':
+                    out_file = template
+
+                if not os.path.isdir(out_dir):
+                    mkdir_p(out_dir)
+
+                ofd = open(os.path.join(out_dir,out_file),'w')
 
                 ofd.write(mako_template.render(**kwargs))
 
                 ofd.close()
 
-                os.chmod(os.path.join(node,template),
+                os.chmod(os.path.join(out_dir,out_file),
                          os.stat(template_file).st_mode)
 
             node_index[node] = index
@@ -323,6 +343,14 @@ def build_configuration(experiment_configurations,
     if 'host' in nodes:
         # build host templates
         for template in list(templates['host'].values()):
+            target=''
+
+            m = re.match(r'^(.*)@mv{(.+)}$',template)
+
+            if m:
+                template = m.group(1)
+                target = m.group(2)
+
             template_file = template_lookup(template,template_paths['host'],plugin_module_name)
 
             mako_template = Template(filename=template_file,
@@ -330,18 +358,28 @@ def build_configuration(experiment_configurations,
                                                      'division',
                                                      'print_function'])
 
-            ofd = open(os.path.join('host',template),'w')
-
             kwargs = template_kwargs(template,
                                      'host',
                                      __node_index=node_index,
                                      __share=share)
 
+            out_dir = os.path.join('host',os.path.dirname(target))
+
+            out_file = os.path.basename(target)
+
+            if out_file == '':
+                out_file = template
+
+            if not os.path.isdir(out_dir):
+                mkdir_p(out_dir)
+
+            ofd = open(os.path.join(out_dir,out_file),'w')
+
             ofd.write(mako_template.render(**kwargs))
 
             ofd.close()
 
-            os.chmod(os.path.join('host',template),
+            os.chmod(os.path.join(out_dir,out_file),
                      os.stat(template_file).st_mode)
 
 
