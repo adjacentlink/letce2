@@ -6,12 +6,6 @@ Build-Depends: debhelper (>= 8.0.0), dh-python
 Standards-Version: 3.9.3
 Homepage: https://github.com/adjacentlink/letce2
 
-Package: python-letce2
-Section: python
-Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}
-Description: Lightweight Experiment Template Configuration Environment
-
 Package: python3-letce2
 Section: python
 Architecture: all
