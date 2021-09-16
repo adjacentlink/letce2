@@ -10,7 +10,7 @@ RUN apt-get -y upgrade
 # Copy and install packages from the latest upsteam dependencies
 WORKDIR /opt
 RUN mkdir -p dependencies
-RUN dpkg -i dependencies/*; apt-get -y -f install
+# RUN dpkg -i dependencies/*; apt-get -y -f install
 
 # Build tools
 RUN apt-get -y install git gcc g++ autoconf automake libtool dh-python debhelper pkg-config python3-setuptools

@@ -8,7 +8,7 @@ RUN yum -y update
 # Copy and install packages from the latest upsteam dependencies
 WORKDIR /opt
 RUN mkdir -p dependencies
-RUN yum -y install dependencies/*\.rpm
+# RUN yum -y install dependencies/*\.rpm
 
 # Build tools
 RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build
