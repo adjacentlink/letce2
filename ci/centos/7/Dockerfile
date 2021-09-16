@@ -11,12 +11,12 @@ RUN mkdir -p dependencies
 # RUN yum -y install dependencies/*\.rpm
 
 # Build tools
-RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build python-devel
+RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build python-devel python-setuptools
 
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
 WORKDIR letce2
 RUN ./autogen.sh
-RUN ./configure --with-python2
+RUN ./configure
 RUN make rpm
 RUN cp $(find .rpmbuild/RPMS -name "*\.rpm") /opt/built
 RUN yum -y install /opt/built/*
