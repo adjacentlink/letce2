@@ -11,7 +11,7 @@ RUN mkdir -p dependencies
 # RUN yum -y install dependencies/*\.rpm
 
 # Build tools
-RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build
+RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build python-devel
 
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
 WORKDIR letce2

@@ -10,7 +10,7 @@ RUN mkdir -p dependencies
 # RUN dnf -y install dependencies/*\.rpm
 
 # Build tools
-RUN dnf -y install git gcc-c++ make autoconf automake libtool rpm-build
+RUN dnf -y install git gcc-c++ make autoconf automake libtool rpm-build python3-devel
 
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
 
