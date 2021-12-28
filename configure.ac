@@ -32,7 +32,7 @@
  See toplevel COPYING for more information.
 ])
 
-AC_INIT([letce2],0.2.8,[labs at adjacentlink dot com])
+AC_INIT([letce2],0.2.9,[labs at adjacentlink dot com])
 
 AC_CONFIG_SRCDIR([letce2])
 
