@@ -18,9 +18,7 @@ RUN apt-get -y install git gcc g++ autoconf automake libtool dh-python debhelper
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
 
 WORKDIR letce2
-RUN ./autogen.sh
-RUN ./configure
-RUN make deb
+RUN ./autogen.sh && ./configure && make deb
 RUN cp $(find .debbuild -name "*\.deb") /opt/built
 RUN dpkg -i /opt/built/*; apt-get -y install -f
 
