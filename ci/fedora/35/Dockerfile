@@ -15,9 +15,7 @@ RUN dnf -y install git gcc-c++ make autoconf automake libtool rpm-build python3-
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
 
 WORKDIR letce2
-RUN ./autogen.sh
-RUN ./configure
-RUN make rpm
+RUN ./autogen.sh && ./configure && make rpm
 RUN cp $(find .rpmbuild/RPMS -name "*\.rpm") /opt/built
 RUN dnf -y install /opt/built/*
 
