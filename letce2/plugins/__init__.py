@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 - Adjacent Link LLC, Bridgewater, New Jersey
+# Copyright (c) 2023 - Adjacent Link LLC, Bridgewater, New Jersey
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,5 +29,4 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # See toplevel COPYING for more information.
-
-__import__("pkg_resources").declare_namespace(__name__)
+__path__ = __import__('pkgutil').extend_path(__path__, __name__)

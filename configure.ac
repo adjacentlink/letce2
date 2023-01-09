@@ -32,7 +32,7 @@
  See toplevel COPYING for more information.
 ])
 
-AC_INIT([letce2],0.2.10,[labs at adjacentlink dot com])
+AC_INIT([letce2],[0.2.10],[labs at adjacentlink dot com])
 
 AC_CONFIG_SRCDIR([letce2])
 
@@ -42,7 +42,7 @@ AM_INIT_AUTOMAKE([])
 
 AC_PROG_INSTALL
 
-AM_PATH_PYTHON([2.7])
+AM_PATH_PYTHON([3.6])
 
 AC_PYTHON_MODULE(mako)
 
@@ -61,6 +61,6 @@ AC_SUBST(DATE_RFC2822,`date -R`)
 LANG=C
 AC_SUBST(LANG)
 
-AC_OUTPUT(
- Makefile
-)
+AC_CONFIG_FILES([Makefile
+])
+AC_OUTPUT
