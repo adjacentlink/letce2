@@ -9,9 +9,9 @@ setup(name='letce2',
       url="https://adjacentlink.com",
       license = 'BSD',
       packages=['letce2',
+                'letce2.plugins',
                 'letce2.interface',
                 'letce2.engine',
-                'letce2.plugins',
                 'letce2.utils'],
       scripts=['scripts/letce2'])
 

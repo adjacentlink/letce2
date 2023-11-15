@@ -1,25 +1,25 @@
-FROM centos:centos7
+FROM fedora:37
 
 RUN mkdir -p /opt/built
 
-RUN yum -y install epel-release
-RUN yum -y update
+RUN dnf -y update
 
 # Copy and install packages from the latest upsteam dependencies
 WORKDIR /opt
 RUN mkdir -p dependencies
-# RUN yum -y install dependencies/*\.rpm
+# RUN dnf -y install dependencies/*\.rpm
 
 # Build tools
-RUN yum -y install git gcc-c++ make autoconf automake libtool rpm-build python-devel python-setuptools
+RUN dnf -y install git gcc-c++ make autoconf automake libtool rpm-build python3-devel
 
 RUN git clone https://github.com/adjacentlink/letce2 -b develop
+
 WORKDIR letce2
 RUN ./autogen.sh && ./configure && make rpm
 RUN cp $(find .rpmbuild/RPMS -name "*\.rpm") /opt/built
-RUN yum -y install /opt/built/*
+RUN dnf -y install /opt/built/*
 
-RUN yum clean all
+RUN dnf clean all
 
 RUN echo 'complete'
 
