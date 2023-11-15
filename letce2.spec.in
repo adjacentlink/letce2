@@ -42,7 +42,7 @@ ln -s letce2-%{python3_version} %{buildroot}%{_bindir}/letce2-3
 
 ln -s letce2-3 %{buildroot}%{_bindir}/letce2
 
-pathfix.py -pni "%{__python3} %{py3_shbang_opts}" %{buildroot}%{_bindir}/*-%{python3_version}
+%py3_shebang_fix %{buildroot}%{_bindir}/*-%{python3_version}
 
 find ${RPM_BUILD_ROOT} -name '*.a' -exec rm '{}'  \;
 find ${RPM_BUILD_ROOT} -name '*.la' -exec rm '{}' \;
