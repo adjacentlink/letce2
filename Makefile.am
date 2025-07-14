@@ -47,10 +47,11 @@ setup.py:	setup.py.in
 install-exec-hook: $(BUILT_SOURCES)
 	$(PYTHON) setup.py install \
 	    -O1 \
-        --record .installedfiles \
-	    --prefix=$(prefix) \
-	    --exec-prefix=$(exec_prefix) \
-	    $(if $(DESTDIR),--root=$(DESTDIR))
+            --record .installedfiles \
+            --prefix=$(prefix) \
+            --exec-prefix=$(exec_prefix) \
+            $(if $(DESTDIR),--root=$(DESTDIR)) \
+            $(if $(subst false,,$(HAVE_DEB)),--install-layout=deb)
 
 uninstall-hook:
 	if test -f .installedfiles; then xargs -a .installedfiles rm -f; fi
