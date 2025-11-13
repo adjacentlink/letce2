@@ -213,7 +213,7 @@ def build_configuration(experiment_configurations,
 
     def template_kwargs(template,node,**kwargs):
         kwargs['__node_name'] = node
-        kwargs['__top_dir'] = os.getcwd()
+        kwargs['__top_dir'] = os.environ.get('LETCE2_TOP_DIR',os.getcwd())
 
         # add variables that are for all templates
         if node in variables:
