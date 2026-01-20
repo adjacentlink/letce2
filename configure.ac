@@ -1,5 +1,5 @@
 %AC_COPYRIGHT([
- Copyright (c) 2017-2023 - Adjacent Link LLC, Bridgewater, New Jersey
+ Copyright (c) 2017-2026 - Adjacent Link LLC, Bridgewater, New Jersey
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  See toplevel COPYING for more information.
 ])
 
-AC_INIT([letce2],[0.2.12],[labs at adjacentlink dot com])
+AC_INIT([letce2],[0.2.13],[labs at adjacentlink dot com])
 
 AC_CONFIG_SRCDIR([letce2])
 
